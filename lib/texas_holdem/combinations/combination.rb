@@ -49,10 +49,17 @@ module TexasHoldem
         update_combination
       end
 
+      #Template method
+      #every ancestor of Combination class is supposed to implement this method
+      #return -1,0 or 1 as a result of comparing two combinations of same class
       def compare_same_rank(other)
         raise NotImplementedError 'Provide an implementation of #compare_same_rank method in ancestors'
       end
 
+      #Template method
+      #every ancestor of Combination class is supposed to implement this method
+      #returns an array containing all cards needed to build a combination
+      #if there is no way to build a combination return an empty array
       def get_combination_cards(cards)
         raise NotImplementedError 'Provide an implementation of #get_combination_cards method in ancestors'
       end
@@ -66,15 +73,15 @@ module TexasHoldem
       end
 
       #compares kickers of two combinations of same rank
-      #kicker cards are stored in sorted array
+      #assuming kicker cards are stored in sorted array
       def compare_kickers(other)
-        kicker_cards.each_with_index do |i, kicker|
+        kicker_cards.each_with_index do |kicker, i|
           other_kicker = other.kicker_cards[i]
           compared_by_kicker = kicker <=> other_kicker
           return compared_by_kicker unless compared_by_kicker == 0
         end
+        0
       end
-      0
     end
   end
 end

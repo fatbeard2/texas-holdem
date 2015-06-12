@@ -45,5 +45,17 @@ describe TexasHoldem::Combinations::Pair do
     end
   end
 
+  describe 'comparing with another pair' do
+    let(:pair1) { Pair.new([Card.new('As'), Card.new('Ac')]) }
+    let(:pair2) { Pair.new([Card.new('2s'), Card.new('2c'), Card.new('3c')]) }
+    let(:pair3) { Pair.new([Card.new('2h'), Card.new('2d'), Card.new('10h')]) }
+    let(:pair4) { Pair.new([Card.new('2s'), Card.new('2c'), Card.new('10d')]) }
+
+    it 'compares pairs' do
+      expect(pair1).to be > pair2
+      expect(pair2).to be < pair3
+      expect(pair4).to eq pair4
+    end
+  end
 
 end

@@ -7,11 +7,18 @@ module TexasHoldem
         cards_by_rank.each do |rank, cards_of_same_rank|
           pairs << cards_of_same_rank if cards_of_same_rank.length == 2
         end
-        pairs.length == 1 ? pairs[0] : pairs.max_by { |pair| pair[0] }
+        case pairs.length
+          when 0
+            []
+          when 1
+            pairs[0]
+          else
+            pairs.max_by { |pair| pair[0] }
+        end
       end
 
       def compare_same_rank(other)
-        other.combination_cards[0] <=> combination_cards[0]
+        combination_cards[0] <=> other.combination_cards[0]
       end
 
     end

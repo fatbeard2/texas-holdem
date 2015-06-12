@@ -65,8 +65,8 @@ describe TexasHoldem::Card do
   describe '#<=>' do
     it 'compares two cards' do
       expect(TexasHoldem::Card.new('Qs')).to eq TexasHoldem::Card.new('Qc')
-      expect(TexasHoldem::Card.new('Qs')).to be >= TexasHoldem::Card.new('2d')
-      expect(TexasHoldem::Card.new('Qs')).to be <= TexasHoldem::Card.new('Kh')
+      expect(TexasHoldem::Card.new('Qs')).to be > TexasHoldem::Card.new('2d')
+      expect(TexasHoldem::Card.new('Qs')).to be < TexasHoldem::Card.new('Kh')
     end
   end
 end
