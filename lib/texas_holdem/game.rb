@@ -3,17 +3,20 @@ module TexasHoldem
 
     attr_reader :players, :common_cards
 
-    def initialize(players, deck)
-      @players = players
-      @common_cards = []
-      @common_cards << deck.deal(5)
-      players.each do |player|
-        player.add_to_hand(deck.deal(2).concat(@common_cards))
+    def initialize(players_count, deck)
+      @players = []
+      @common_cards = deck.deal(5)
+      players_count.times do |i|
+        player_cards = deck.deal(2)
+        puts "Player #{i} gets #{player_cards.map(&:to_s)}"
+        players << PlayerHand.new(player_cards.concat(@common_cards))
       end
+      puts "Cards on table: #{@common_cards.map(&:to_s)}"
+      puts "The winner is player #{@players.index(winner)} with combination #{winner.best_combination}"
     end
 
-    def strongest_hand
-      players.sort_by(&:hand)
+    def winner
+      players.max
     end
   end
 end

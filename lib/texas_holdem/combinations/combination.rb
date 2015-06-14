@@ -3,26 +3,40 @@ module TexasHoldem
 
     class Combination
       include Comparable
-
+      MAX_COMBINATION_LENGTH = 5
       attr_reader :cards, :cards_by_rank, :cards_by_suit, :combination_cards, :kicker_cards
 
       def initialize(cards)
         @cards = cards
-        update_combination
-      end
-
-      def update_combination
         @cards_by_rank = get_cards_by_rank
         @cards_by_suit = get_cards_by_suit
         @combination_cards = get_combination_cards(cards)
         @kicker_cards = get_kicker_cards
       end
 
+      def has_combination?
+        combination_cards.length > 0
+      end
+
+      def <=>(other)
+        compared_by_rank = RANKS[self.class] <=> RANKS[other.class]
+        return compared_by_rank unless compared_by_rank == 0
+        compared_by_same_rank = compare_same_rank(other)
+        return compared_by_same_rank unless compared_by_same_rank == 0
+        compare_kickers(other)
+      end
+
+      def to_s
+        "#{combination_cards.map(&:to_s)}, kickers: #{kicker_cards.map(&:to_s)}"
+      end
+
+      private
+
       def get_cards_by_rank
         cards_by_rank = {}
         cards.each do |card|
-          cards_by_rank[card.rank] ||= []
-          cards_by_rank[card.rank] << card
+          cards_by_rank[card.to_i] ||= []
+          cards_by_rank[card.to_i] << card
         end
         cards_by_rank
       end
@@ -37,16 +51,9 @@ module TexasHoldem
       end
 
       def get_kicker_cards
-        cards.delete_if do |card|
+        cards.reject do |card|
           combination_cards.include?(card)
-        end.sort{ |c1, c2| c2 <=> c1 }.take(5 - combination_cards.length)
-        ##todo make 5 as constant
-      end
-
-      def add_to_hand(card_to_add)
-        cards << card_to_add if card_to_add.is_a?(Card)
-        cards.push(*card_to_add) if card_to_add.is_a?(Array)
-        update_combination
+        end.sort{ |c1, c2| c2 <=> c1 }.take(MAX_COMBINATION_LENGTH - combination_cards.length)
       end
 
       #Template method
@@ -62,14 +69,6 @@ module TexasHoldem
       #if there is no way to build a combination return an empty array
       def get_combination_cards(cards)
         raise NotImplementedError 'Provide an implementation of #get_combination_cards method in ancestors'
-      end
-
-      def <=>(other)
-        compared_by_rank = RANKS[self.class] <=> RANKS[other.class]
-        return compared_by_rank unless compared_by_rank == 0
-        compared_by_same_rank = compare_same_rank(other)
-        return compared_by_same_rank unless compared_by_same_rank == 0
-        compare_kickers(other)
       end
 
       #compares kickers of two combinations of same rank

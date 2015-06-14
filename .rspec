@@ -1,3 +1,4 @@
 --color
 --require spec_helper
+--require combinations/shared_combination_examples
 --format documentation

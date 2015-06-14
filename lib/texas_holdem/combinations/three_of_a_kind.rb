@@ -1,13 +1,18 @@
 module TexasHoldem
   module Combinations
-    class HighestCard < Combination
+    class ThreeOfAKind < Combination
+
       def get_combination_cards(cards)
-        cards.empty? ? [] : [cards.max]
+        cards_by_rank.each do |rank, cards_of_same_rank|
+          return cards_of_same_rank if cards_of_same_rank.length == 3
+        end
+        []
       end
 
       def compare_same_rank(other)
         combination_cards[0] <=> other.combination_cards[0]
       end
+
     end
   end
 end

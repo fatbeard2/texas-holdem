@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+require 'texas_holdem'
+
+loop do
+  TexasHoldem::Game.new(2, TexasHoldem::Deck.new)
+  puts 'Whant to play another game? y/n'
+  break if (gets.chomp).downcase == 'n'
+end

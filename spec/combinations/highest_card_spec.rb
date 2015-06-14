@@ -2,34 +2,26 @@ require 'rspec'
 
 describe TexasHoldem::Combinations::HighestCard do
 
-  Card = TexasHoldem::Card
-  HighestCard = TexasHoldem::Combinations::HighestCard
+  include_examples 'initialising with empty array'
 
-  describe '#initialize' do
-    context 'when cards has a pair' do
-      let(:set1) {[ Card.new('Js'), Card.new('Ad'), Card.new('Qh') ]}
-
-      it 'sets combination cards' do
-        combination_cards = HighestCard.new(set1).combination_cards.map(&:to_s)
-        expect(combination_cards). to eq(['A♦'])
-      end
-
-      it 'sets kicker cards' do
-        kicker_cards = HighestCard.new(set1).kicker_cards.map(&:to_s)
-        expect(kicker_cards). to eq(['Q♥', 'J♠'])
-      end
+  context 'when combination is present' do
+    include_examples 'setting combination info' do
+      let(:cards) {[ Card.new('Jh'), Card.new('Ad'), Card.new('Qc') ]}
+      let(:combination_cards) {['A♦']}
+      let(:kicker_cards) {['Q♣','J♥']}
     end
   end
 
-  describe 'comparing with another highest card' do
-    let(:highest1) { HighestCard.new([Card.new('As'), Card.new('2c')]) }
-    let(:highest2) { HighestCard.new([Card.new('2s'), Card.new('2c'), Card.new('3c')]) }
-    let(:highest3) { HighestCard.new([Card.new('2h'), Card.new('2d'), Card.new('3h')]) }
+  include_examples '#has_combination?' do
+    let(:cards_with_combination) {[ Card.new('Ad'), Card.new('As'), Card.new('6h') ]}
+    let(:cards_without_combination) {[]}
+  end
 
-    it 'compares pairs' do
-      expect(highest1).to be > highest2
-      expect(highest2).to eq highest3
-    end
+  include_examples 'comparing' do
+    let(:strongest_combination) { [Card.new('As'), Card.new('Qc')] }
+    let(:middle_combination1)  { [Card.new('2s'), Card.new('10d')] }
+    let(:middle_combination2) { [Card.new('2h'), Card.new('10h')] }
+    let(:weakest_combination) { [Card.new('2s'), Card.new('3c')] }
   end
 
 end

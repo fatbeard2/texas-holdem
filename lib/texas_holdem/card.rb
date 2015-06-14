@@ -4,6 +4,8 @@ module TexasHoldem
     NUM_RANKS = 2..10
     FACE_CARD_RANKS = { J: 11, Q: 12, K: 13, A: 14 }
     SUITS = {c: '♣', s: '♠', h: '♥', d: '♦'}
+    ACE_HIGH = FACE_CARD_RANKS[:A]
+    ACE_LOW = NUM_RANKS.min - 1
 
     attr_reader :suit, :rank
 

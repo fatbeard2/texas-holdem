@@ -1,7 +1,6 @@
 require 'rspec'
 
 describe TexasHoldem::Card do
-
   
   it 'builds a set 52 cards' do
     expect(TexasHoldem::Card.build_all.length).to eq(52)

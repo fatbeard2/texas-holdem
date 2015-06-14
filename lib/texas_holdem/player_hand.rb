@@ -1,18 +1,28 @@
 module TexasHoldem
   class PlayerHand
-    attr_reader :combination, :cards
+    include Comparable
+    attr_reader :best_combination, :cards
 
     def initialize(cards)
       @cards = cards
-      @combination = best_combination(cards)
+      @best_combination = get_best_combination
+    end
+
+    def add_cards(cards)
+      @cards.push(*cards)
+      @best_combination = get_best_combination
     end
 
     def <=>(other)
-      other.combination <=> combination
+      best_combination <=> other.best_combination
     end
 
-    def best_combination(cards)
+    private
 
+    def get_best_combination
+      Combinations::RANKS.keys.map do |combination_class|
+        combination_class.new(cards)
+      end.find(&:has_combination?)
     end
   end
 end
