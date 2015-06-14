@@ -1,2 +1,2 @@
-require 'texas_holdem'
+require 'texas-holdem'
 Card = TexasHoldem::Card

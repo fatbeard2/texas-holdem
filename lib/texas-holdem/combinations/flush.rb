@@ -1,4 +1,3 @@
-require 'byebug'
 module TexasHoldem
   module Combinations
     class Flush < Combination
